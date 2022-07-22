@@ -2,69 +2,103 @@
 import {onMounted} from 'vue'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import gsap from "gsap";
+import * as dat from "dat.gui";
+import t2 from '@/assets/2.png'
+
 
 onMounted(()=>{
-var scene = new THREE.Scene();
-    /**
-     * 创建网格模型
-     */
-    // var geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-    var geometry = new THREE.BoxGeometry(100, 100, 100); //创建一个立方体几何对象Geometry
-    var material = new THREE.MeshLambertMaterial({
-      color: "red"
-    }); //材质对象Material
-    var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
-    scene.add(mesh); //网格模型添加到场景中
-    /**
-     * 光源设置
-     */
-    //点光源
-    var point = new THREE.PointLight(0xffffff);
-    point.position.set(400, 200, 300); //点光源位置
-    scene.add(point); //点光源添加到场景中
-    //环境光
-    var ambient = new THREE.AmbientLight(0x444444);
-    scene.add(ambient);
-    // console.log(scene)
-    // console.log(scene.children)
-    /**
-     * 相机设置
-     */
-    var width = window.innerWidth; //窗口宽度
-    var height = window.innerHeight; //窗口高度
-    var k = width / height; //窗口宽高比
-    var s = 200; //三维场景显示范围控制系数，系数越大，显示的范围越大
-    //创建相机对象
-    var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
-    camera.position.set(200, 300, 200); //设置相机位置
-    camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
-    /**
-     * 创建渲染器对象
-     */
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(width, height);//设置渲染区域尺寸
-    renderer.setClearColor(0xb9d3ff, .5); //设置背景颜色
-    document.getElementById("test").appendChild(renderer.domElement); //body元素中插入canvas对象
-    
-    const axesHelper = new THREE.AxesHelper(100)
-    scene.add(axesHelper)
-    //执行渲染操作   指定场景、相机作为参数
-    const control = new OrbitControls(camera,renderer.domElement)
-    function render(){
-        renderer.render(scene, camera);
-        requestAnimationFrame(render)
-    }
-    render()
+const gui = new dat.GUI();
+const scene = new THREE.Scene();
 
+// 2、创建相机
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+// 设置相机位置
+camera.position.set(0, 0, 10);
+scene.add(camera);
+
+const sphereGeometry = new THREE.SphereBufferGeometry(3, 20, 20);
+// 设置点材质
+const pointsMaterial = new THREE.PointsMaterial();
+pointsMaterial.size = 0.1;
+pointsMaterial.color.set(0xfff000);
+// 相机深度而衰减
+pointsMaterial.sizeAttenuation = true;
+
+// 载入纹理
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load(t2);
+// 设置点材质纹理
+pointsMaterial.map = texture;
+pointsMaterial.alphaMap = texture;
+pointsMaterial.transparent = true;
+pointsMaterial.depthWrite = false;
+pointsMaterial.blending = THREE.AdditiveBlending;
+
+const points = new THREE.Points(sphereGeometry, pointsMaterial);
+
+scene.add(points);
+
+// 初始化渲染器
+const renderer = new THREE.WebGLRenderer();
+// 设置渲染的尺寸大小
+renderer.setSize(window.innerWidth, window.innerHeight);
+// 开启场景中的阴影贴图
+renderer.shadowMap.enabled = true;
+renderer.physicallyCorrectLights = true;
+
+// console.log(renderer);
+// 将webgl渲染的canvas内容添加到body
+document.getElementById("test").appendChild(renderer.domElement);
+
+// // 使用渲染器，通过相机将场景渲染进来
+// renderer.render(scene, camera);
+
+// 创建轨道控制器
+const controls = new OrbitControls(camera, renderer.domElement);
+// 设置控制器阻尼，让控制器更有真实效果,必须在动画循环里调用.update()。
+controls.enableDamping = true;
+
+// 添加坐标轴辅助器
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
+// 设置时钟
+const clock = new THREE.Clock();
+
+function render() {
+  let time = clock.getElapsedTime();
+  controls.update();
+  renderer.render(scene, camera);
+  //   渲染下一帧的时候就会调用render函数
+  requestAnimationFrame(render);
+}
+
+render();
+
+// 监听画面变化，更新渲染画面
+window.addEventListener("resize", () => {
+  //   console.log("画面变化了");
+  // 更新摄像头
+  camera.aspect = window.innerWidth / window.innerHeight;
+  //   更新摄像机的投影矩阵
+  camera.updateProjectionMatrix();
+
+  //   更新渲染器
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  //   设置渲染器的像素比
+  renderer.setPixelRatio(window.devicePixelRatio);
+});
 })
-    //   document.getElementById("test").appendChild(renderer.domElement)
-
 </script>
 
 <template>
-<div id="test"></div>
+  <div id="test"></div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
