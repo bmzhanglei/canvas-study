@@ -1,9 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from './view/Home.vue'
 import About from './view/About.vue'
+import Shader from './view/Shader.vue'
 const routes = [
     { path: '/', component: Home },
     { path: '/about', component: About },
+    { path: '/shader', component: Shader },
 ]
 
 

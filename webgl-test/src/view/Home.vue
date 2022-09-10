@@ -26,7 +26,7 @@ scene.add(camera);
 const sphereGeometry = new THREE.SphereBufferGeometry(3, 20, 20);
 // 设置点材质
 const pointsMaterial = new THREE.PointsMaterial();
-pointsMaterial.size = 0.1;
+pointsMaterial.size = .2;
 pointsMaterial.color.set(0xfff000);
 // 相机深度而衰减
 pointsMaterial.sizeAttenuation = true;
@@ -95,6 +95,8 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(window.devicePixelRatio);
 });
 })
+
+
 </script>
 
 <template>
