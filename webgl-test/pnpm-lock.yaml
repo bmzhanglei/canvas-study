@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@vitejs/plugin-vue': ^2.3.3
+  cannon-es: ^0.20.0
   dat.gui: ^0.7.9
   gsap: ^3.9.1
   three: ^0.142.0
@@ -10,6 +11,7 @@ specifiers:
   vue-router: '4'
 
 dependencies:
+  cannon-es: registry.npmmirror.com/cannon-es/0.20.0
   three: registry.npmmirror.com/three/0.142.0
   vue: registry.npmmirror.com/vue/3.2.37
   vue-router: registry.npmmirror.com/vue-router/4.1.1_vue@3.2.37
@@ -159,6 +161,12 @@ packages:
     resolution: {integrity: sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/shared/-/shared-3.2.37.tgz}
     name: '@vue/shared'
     version: 3.2.37
+
+  registry.npmmirror.com/cannon-es/0.20.0:
+    resolution: {integrity: sha512-eZhWTZIkFOnMAJOgfXJa9+b3kVlvG+FX4mdkpePev/w/rP5V8NRquGyEozcjPfEoXUlb+p7d9SUcmDSn14prOA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cannon-es/-/cannon-es-0.20.0.tgz}
+    name: cannon-es
+    version: 0.20.0
+    dev: false
 
   registry.npmmirror.com/csstype/2.6.20:
     resolution: {integrity: sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/csstype/-/csstype-2.6.20.tgz}
